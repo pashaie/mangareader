@@ -1,16 +1,11 @@
 import './App.css';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleDarkMode, toggleSeamless, toggleSmoothScroll } from './Settings/Actions'
+
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
-  const handleDarkMode = (e) => {
-    if (!darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-    setDarkMode(!darkMode)
-  }
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.settings)
 
   return (
     <>
@@ -32,15 +27,18 @@ function App() {
             <button className="btn-smart-fit" data-fit-key="size1">Smart fit large</button>
             <div className="menu-subtitle">SETTINGS</div>
             <label className="label-toggle">
-              <input type="checkbox" id="input-smooth-scroll" className="input-toggle" />
+              <input type="checkbox" id="input-smooth-scroll" className="input-toggle"
+                checked={state.smoothScroll} onChange={() => dispatch(toggleSmoothScroll())} />
               <span>Smooth scrolling</span>
             </label>
             <label className="label-toggle">
-              <input type="checkbox" id="input-seamless" className="input-toggle" />
+              <input type="checkbox" id="input-seamless" className="input-toggle"
+                checked={state.seamless} onChange={() => dispatch(toggleSeamless())} />
               <span>Collapse spacing</span>
             </label>
             <label className="label-toggle">
-              <input type="checkbox" className="input-toggle" checked={darkMode} onChange={handleDarkMode} />
+              <input type="checkbox" className="input-toggle"
+                checked={state.darkMode} onChange={() => dispatch(toggleDarkMode())} />
               <span>Dark mode</span>
             </label>
           </div>
@@ -51,10 +49,6 @@ function App() {
           <div id="scrubber" />
           <div id="scrubber-marker-active" />
           <div id="scrubber-marker" />
-        </div>
-        <div id="update-toast">
-          <span> A new version of Mangareader (<span id="next-version" />) is available. </span>
-          <a id="link-update" target="_blank">Download</a>
         </div>
       </div>
 
